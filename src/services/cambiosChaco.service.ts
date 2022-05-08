@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as puppeteer from 'puppeteer';
-import { ExchangeData, Service } from '../interfaces/services';
+import { ExchangeData, Service } from '../interfaces';
 
 @Injectable()
 export class CambiosChacoService implements Service {

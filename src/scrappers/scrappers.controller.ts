@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { BancoFamiliarService, CambiosChacoService } from '../services';
+import { ExchangesService } from '../services/exchanges.service';
 
 @Controller('scrapper')
 export class ScrapperController {
@@ -7,11 +8,20 @@ export class ScrapperController {
     constructor(
         private bancoFamiliarService: BancoFamiliarService,
         private cambiosChacoService: CambiosChacoService,
+        private exchangesService: ExchangesService
     ) { }
 
     @Get('familiar')
     async scrapperBankFamiliar() {
-        return await this.bancoFamiliarService.getExchangeData()
+        const bankFamiliar = await this.bancoFamiliarService.getExchangeData()
+        await this.exchangesService.saveExchange(bankFamiliar)
+        return 'Saved data'
+    }
+
+    @Get('familiar/get')
+    async getDataBankFamiliar() {
+        const bankFamiliar = await this.exchangesService.getAllExchangeQuotes()
+        return bankFamiliar
     }
 
     @Get('cambios-chaco')
