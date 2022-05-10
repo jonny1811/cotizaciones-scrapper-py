@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 import * as puppeteer from 'puppeteer';
-import { ExchangeData, Service } from '../interfaces';
+import { Service } from '../interfaces';
+import { ExchangesDocument } from '../exchanges/exchanges.types';
 
 @Injectable()
 export class CambiosChacoService implements Service {
@@ -32,7 +32,7 @@ export class CambiosChacoService implements Service {
                     clase: '#exchange-eur'
                 }
             ]
-            let response: ExchangeData[] = []
+            let response: ExchangesDocument[] = []
             
             parseCambiosChaco.map((dataMoney) => {
                 const compra = document.querySelectorAll(dataMoney.clase)[0].children[1].children[0].textContent.trim().replace('.', '')
@@ -45,15 +45,11 @@ export class CambiosChacoService implements Service {
                     sellPrice: parseInt(venta),
                     spread: parseInt(venta) - parseInt(compra),
                     date: new Date().toISOString()
-                })
+                } as ExchangesDocument)
             })
 
 
             return response
-        })
-
-        results.map(exchangeResult => {
-            exchangeResult.id = uuidv4()
         })
 
         await browser.close()

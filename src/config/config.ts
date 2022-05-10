@@ -1,4 +1,8 @@
-export default {
+export default () => ({
+    appName: process.env.APP_NAME,
+    appPort: process.env.APP_PORT,
+    mongoDbName: process.env.DB_NAME,
+    mongoDbUrl: process.env.MONGO_URL,
     parseMaxiCambios: [
         {
             moneda: "Dolar",
@@ -157,4 +161,4 @@ export default {
             venta: 'td#euro_venta'
         }
     ]
-}
+})

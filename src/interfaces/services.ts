@@ -1,5 +1,5 @@
-import { ExchangeData } from "./exchanges";
+import { ExchangesDocument } from "../exchanges/exchanges.types";
 
 export interface Service {
-    getExchangeData: () => Promise<ExchangeData[]>
+    getExchangeData: () => Promise<ExchangesDocument[]>
 }
