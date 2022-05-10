@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 import * as puppeteer from 'puppeteer';
 import { Service } from '../interfaces/services';
-import { ExchangeData } from '../interfaces';
+import { ExchangesDocument } from '../exchanges/exchanges.types';
 
 @Injectable()
 export class BancoFamiliarService implements Service {
@@ -33,7 +32,7 @@ export class BancoFamiliarService implements Service {
                     clase: '#cotizaciones > div > div.row > div:nth-child(5)'
                 }
             ]
-            let response: ExchangeData[] = []
+            let response: ExchangesDocument[] = []
             
             parseFamiliar.map((dataMoney) => {
                 const compra = document.querySelectorAll(dataMoney.clase)[0].children[1].children[0].textContent.trim().replace('C:', '').replace('.', '')
@@ -46,15 +45,11 @@ export class BancoFamiliarService implements Service {
                     sellPrice: parseInt(venta),
                     spread: parseInt(venta) - parseInt(compra),
                     date: new Date().toISOString()
-                })
+                } as ExchangesDocument)
             })
 
 
             return response
-        })
-
-        results.map(exchangeResult => {
-            exchangeResult.id = uuidv4()
         })
 
         await browser.close()

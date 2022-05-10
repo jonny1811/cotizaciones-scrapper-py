@@ -1,0 +1,1 @@
+export const SCRAPPERS_BASE_PATH = '/scrapper'

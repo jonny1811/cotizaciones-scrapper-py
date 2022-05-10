@@ -1,31 +1,34 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { BancoFamiliarService, CambiosChacoService } from '../services';
-import { ExchangesService } from '../services/exchanges.service';
+import { ExchangesService } from '../exchanges/exchanges.service';
+import { SCRAPPERS_BASE_PATH } from './scrappers.constants';
 
-@Controller('scrapper')
+@Controller(SCRAPPERS_BASE_PATH)
 export class ScrapperController {
 
     constructor(
         private bancoFamiliarService: BancoFamiliarService,
         private cambiosChacoService: CambiosChacoService,
         private exchangesService: ExchangesService
-    ) { }
+    ) {}
 
-    @Get('familiar')
+    @Post('familiar')
     async scrapperBankFamiliar() {
         const bankFamiliar = await this.bancoFamiliarService.getExchangeData()
         await this.exchangesService.saveExchange(bankFamiliar)
-        return 'Saved data'
+        return {
+            entityBank: 'Banco Familiar',
+            status: 200
+        }
     }
 
-    @Get('familiar/get')
-    async getDataBankFamiliar() {
-        const bankFamiliar = await this.exchangesService.getAllExchangeQuotes()
-        return bankFamiliar
-    }
-
-    @Get('cambios-chaco')
+    @Post('cambios-chaco')
     async scrapperCambiosChaco() {
-        return await this.cambiosChacoService.getExchangeData()
+        const cambiosChaco = await this.cambiosChacoService.getExchangeData()
+        await this.exchangesService.saveExchange(cambiosChaco)
+        return {
+            entityBank: 'Cambios Chaco',
+            status: 200
+        }
     }
 }
