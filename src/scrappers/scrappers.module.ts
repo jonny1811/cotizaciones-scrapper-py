@@ -3,6 +3,7 @@ import { ScrapperController } from './scrappers.controller'
 import { CambiosChacoService, BancoFamiliarService } from '../services'
 import { ExchangesModule } from '../exchanges/exchanges.module';
 import { BancoVisionService } from '../services/bancoVision.service';
+import { CambiosAlberdiService } from '../services/cambiosAlberdi.service';
 
 @Module({
   imports: [
@@ -11,8 +12,9 @@ import { BancoVisionService } from '../services/bancoVision.service';
   controllers: [ScrapperController],
   providers: [
     CambiosChacoService,
+    CambiosAlberdiService,
     BancoFamiliarService,
-    BancoVisionService
+    BancoVisionService,
   ]
 })
 export class ScrapperModule {}

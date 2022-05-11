@@ -4,13 +4,15 @@ import { ExchangesService } from '../exchanges/exchanges.service';
 import { SCRAPPERS_BASE_PATH } from './scrappers.constants';
 import { BancoVisionService } from '../services/bancoVision.service';
 import { Cron } from '@nestjs/schedule';
+import { CambiosAlberdiService } from '../services/cambiosAlberdi.service';
 
 @Controller(SCRAPPERS_BASE_PATH)
 export class ScrapperController {
 
     constructor(
-        private readonly bancoFamiliarService: BancoFamiliarService,
         private readonly cambiosChacoService: CambiosChacoService,
+        private readonly cambiosAlberdiService: CambiosAlberdiService,
+        private readonly bancoFamiliarService: BancoFamiliarService,
         private readonly bancoVisionService: BancoVisionService,
         private readonly exchangesService: ExchangesService
     ) {}
@@ -25,6 +27,16 @@ export class ScrapperController {
         }
     }
 
+    @Get('banco-vision')
+    async scrapperBankVision() {
+        const bankVision = await this.bancoVisionService.getExchangeData()
+        await this.exchangesService.saveExchange(bankVision)
+        return {
+            entityBank: 'Vision Banco',
+            status: 200
+        }
+    }
+
     @Get('cambios-chaco')
     async scrapperCambiosChaco() {
         const cambiosChaco = await this.cambiosChacoService.getExchangeData()
@@ -35,12 +47,12 @@ export class ScrapperController {
         }
     }
 
-    @Get('banco-vision')
-    async scrapperBankVision() {
-        const bankVision = await this.bancoVisionService.getExchangeData()
-        await this.exchangesService.saveExchange(bankVision)
+    @Get('cambios-alberdi')
+    async scrapperCambiosAlberdi() {
+        const cambiosAlberdi = await this.cambiosAlberdiService.getExchangeData()
+        await this.exchangesService.saveExchange(cambiosAlberdi)
         return {
-            entityBank: 'Vision Banco',
+            entityBank: 'Cambios Alberdi',
             status: 200
         }
     }
@@ -48,17 +60,23 @@ export class ScrapperController {
     @Get('all')
     @Cron('20 * * * *')
     async scrapperAllBankAndExchanges() {
-        const [bankFamiliar, exchangeChaco, bankVision] = await Promise.all([
+        const [
+            bankFamiliar,
+            bankVision,
+            exchangeChaco,
+            exchangeAlberdi
+        ] = await Promise.all([
+            this.bancoVisionService.getExchangeData(),
             this.bancoVisionService.getExchangeData(),
             this.cambiosChacoService.getExchangeData(),
-            this.bancoVisionService.getExchangeData(),
-
+            this.cambiosAlberdiService.getExchangeData()
         ])
         
         await Promise.all([
             this.exchangesService.saveExchange(bankFamiliar),
+            this.exchangesService.saveExchange(bankVision),
             this.exchangesService.saveExchange(exchangeChaco),
-            this.exchangesService.saveExchange(bankVision)
+            this.exchangesService.saveExchange(exchangeAlberdi)
         ])
 
         return {
