@@ -4,6 +4,7 @@ import { ScrapperModule } from './scrappers/scrappers.module'
 import { ExchangesModule } from './exchanges/exchanges.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import configuration from './config/config'
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import configuration from './config/config'
       }),
       inject: [ConfigService]
     }),
+    ScheduleModule.forRoot(),
     ScrapperModule,
     ExchangesModule,
   ],
