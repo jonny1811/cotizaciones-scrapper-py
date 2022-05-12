@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ExchangesRepository } from './exchanges.repository';
 import { Exchanges, MarketRatesParams } from './exchanges.types';
 import { CreateExchangesDTO } from './dto/create-exchanges.dto';
+import { MarketRatesQueryDTO } from './dto/market-rates.query.dto';
 
 @Injectable()
 export class ExchangesService {
@@ -26,7 +27,12 @@ export class ExchangesService {
         return await this.exchangesRepository.findAll()
     }
 
-    async obtainMarketRatesByParams({ entityBank, date }: MarketRatesParams) {
+    async getMarketRatesByParams({ entityBank, date }: MarketRatesParams) {
         return await this.exchangesRepository.findByParams({ entityBank, date })
+    }
+
+    async getAllMarketsRates(marketRatesQueryDTO: MarketRatesQueryDTO) {
+        const { page, pageSize } = marketRatesQueryDTO
+        return await this.exchangesRepository.findPaginated(page, pageSize)
     }
 }

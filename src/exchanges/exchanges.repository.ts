@@ -29,6 +29,15 @@ export class ExchangesRepository implements ExchangeRepository {
         return exchangesFind
     }
 
+    async findPaginated(page: number, pageSize: number) {
+        const query = () => this.exchangeModel.find()
+        return await query()
+            .sort({ date: -1 })
+            .skip(pageSize * (page  - 1))
+            .limit(pageSize)
+            .exec()
+    }
+
     async save(exchangeInfo: Exchanges): Promise<void> {
         const saveExchange = new this.exchangeModel(exchangeInfo)
         await saveExchange.save()
