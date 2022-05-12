@@ -79,7 +79,7 @@ export class ScrapperController {
             exchangeChaco,
             exchangeAlberdi
         ] = await Promise.all([
-            this.bancoVisionService.getExchangeData(),
+            this.bancoFamiliarService.getExchangeData(),
             this.bancoVisionService.getExchangeData(),
             this.bancoContinentalService.getExchangeData(),
             this.cambiosChacoService.getExchangeData(),

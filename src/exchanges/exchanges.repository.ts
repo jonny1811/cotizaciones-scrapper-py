@@ -1,6 +1,7 @@
 import { Exchanges, ExchangeRepository, ExchangesDocument } from './exchanges.types';
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
+import { MarketRatesParams } from './exchanges.types';
 
 export class ExchangesRepository implements ExchangeRepository {
 
@@ -21,6 +22,11 @@ export class ExchangesRepository implements ExchangeRepository {
     async findByEntityBank(entityBank: string): Promise<ExchangesDocument[]> {
         const exchangeFilter = await this.exchangeModel.find({ entityBank }).exec()
         return exchangeFilter
+    }
+
+    async findByParams({ entityBank, date }: MarketRatesParams): Promise<ExchangesDocument[]> {
+        const exchangesFind = await this.exchangeModel.find({ entityBank, date: { $regex: date } }).exec()
+        return exchangesFind
     }
 
     async save(exchangeInfo: Exchanges): Promise<void> {

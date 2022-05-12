@@ -10,6 +10,11 @@ export interface Exchanges {
     date: string
 }
 
+export interface MarketRatesParams {
+    entityBank: string
+    date: string
+}
+
 export interface ExchangeRepository extends BaseRepository<Exchanges> {
     findByEntityBank(entityBank: string): Promise<ExchangesDocument[] | null>
 }

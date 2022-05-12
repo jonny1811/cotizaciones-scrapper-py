@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ExchangesRepository } from './exchanges.repository';
-import { Exchanges } from './exchanges.types';
+import { Exchanges, MarketRatesParams } from './exchanges.types';
 import { CreateExchangesDTO } from './dto/create-exchanges.dto';
 
 @Injectable()
@@ -18,11 +18,15 @@ export class ExchangesService {
         await this.exchangesRepository.save(exchangesInfo[0])
     }
 
-    async getAllExchangeQuotesByEntityBank(entityBank: string): Promise<Exchanges[]> {
+    async getMarketRatesByEntityBank(entityBank: string): Promise<Exchanges[]> {
         return await this.exchangesRepository.findByEntityBank(entityBank)
     }
 
     async getAllExchangeQuotes(): Promise<Exchanges[]> {
         return await this.exchangesRepository.findAll()
+    }
+
+    async obtainMarketRatesByParams({ entityBank, date }: MarketRatesParams) {
+        return await this.exchangesRepository.findByParams({ entityBank, date })
     }
 }
