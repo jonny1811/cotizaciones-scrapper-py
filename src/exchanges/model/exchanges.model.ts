@@ -1,21 +1,13 @@
-import { Schema } from 'mongoose'
+import { Schema, Types } from 'mongoose';
+import { DetailsSchema } from './details.model';
 
 export const ExchangesSchema = new Schema(
     {
-        entityBank: { type: String },
-        name: { type: String },
-        buyPrice: { type: Number },
-        sellPrice: { type: Number },
-        spread: { type: Number },
-        date: { type: String }
+        date: { type: String },
+        place: { type: Types.ObjectId, ref: 'Place' },
+        branch: { type: Types.ObjectId, ref: 'PlaceBranch' },
+        fullDate: { type: String },
+        details: [{ type: DetailsSchema }],
     },
-    {
-        timestamps: true, toJSON: {
-            virtuals: true,
-            versionKey: false,
-            transform: function (_doc, ret): void {
-                delete ret._id
-            }
-        }
-    }
-)
+    { timestamps: true },
+);

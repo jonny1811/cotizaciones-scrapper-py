@@ -6,6 +6,7 @@ import { BancoVisionService } from '../services/bancoVision.service';
 import { Cron } from '@nestjs/schedule';
 import { CambiosAlberdiService } from '../services/cambiosAlberdi.service';
 import { BancoContinentalService } from '../services/bancoContinental.service';
+import { PlaceService } from '../place/place.service';
 
 @Controller(SCRAPPERS_BASE_PATH)
 export class ScrapperController {
@@ -16,7 +17,8 @@ export class ScrapperController {
         private readonly bancoFamiliarService: BancoFamiliarService,
         private readonly bancoVisionService: BancoVisionService,
         private readonly bancoContinentalService: BancoContinentalService,
-        private readonly exchangesService: ExchangesService
+        private readonly exchangesService: ExchangesService,
+		private readonly placeService: PlaceService
     ) {}
 
     @Get('banco-familiar')
@@ -31,11 +33,14 @@ export class ScrapperController {
 
     @Get('banco-vision')
     async scrapperBankVision() {
-        const bankVision = await this.bancoVisionService.getExchangeData()
+        // const placeInfo = await this.bancoVisionService.getExchangePlace()
+		// await this.placeService.savePlace(placeInfo)
+		const bankVision = await this.bancoVisionService.getExchangeData()
         await this.exchangesService.saveExchange(bankVision)
         return {
-            entityBank: 'Vision Banco',
-            status: 200
+            status: 200,
+            message: 'Correctly Data Saved at Banco Vision',
+			data: bankVision
         }
     }
 

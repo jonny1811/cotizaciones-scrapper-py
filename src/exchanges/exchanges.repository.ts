@@ -2,11 +2,12 @@ import { Exchanges, ExchangeRepository, ExchangesDocument } from './exchanges.ty
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { MarketRatesParams } from './exchanges.types';
+import { EXCHANGES_MODEL_NAME } from './exchanges.constants';
 
 export class ExchangesRepository implements ExchangeRepository {
 
     constructor(
-        @InjectModel('Exchanges') private readonly exchangeModel: Model<ExchangesDocument>
+        @InjectModel(EXCHANGES_MODEL_NAME) private readonly exchangeModel: Model<ExchangesDocument>
     ) { }
 
     async findAll(): Promise<ExchangesDocument[]> {

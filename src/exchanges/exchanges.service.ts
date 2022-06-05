@@ -3,6 +3,7 @@ import { ExchangesRepository } from './exchanges.repository';
 import { Exchanges, MarketRatesParams } from './exchanges.types';
 import { CreateExchangesDTO } from './dto/create-exchanges.dto';
 import { MarketRatesQueryDTO } from './dto/market-rates.query.dto';
+import { PlaceRepository } from '../place/place.repository';
 
 @Injectable()
 export class ExchangesService {
@@ -10,13 +11,8 @@ export class ExchangesService {
         private readonly exchangesRepository: ExchangesRepository
     ) { }
 
-    async saveExchange(exchangesInfo: CreateExchangesDTO[]): Promise<void> {
-        if (exchangesInfo.length) {
-            for (const exchange of exchangesInfo) {
-                await this.exchangesRepository.save(exchange)
-            }
-        }
-        await this.exchangesRepository.save(exchangesInfo[0])
+    async saveExchange(exchangesInfo: CreateExchangesDTO): Promise<void> {
+        await this.exchangesRepository.save(exchangesInfo)
     }
 
     async getMarketRatesByEntityBank(entityBank: string): Promise<Exchanges[]> {

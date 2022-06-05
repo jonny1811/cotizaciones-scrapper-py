@@ -1,5 +1,5 @@
-import { ExchangesDocument } from "../exchanges/exchanges.types";
+import { CreateExchangesDTO } from '../exchanges/dto/create-exchanges.dto';
 
 export interface Service {
-    getExchangeData: () => Promise<ExchangesDocument[]>
+    getExchangeData: () => Promise<CreateExchangesDTO>
 }

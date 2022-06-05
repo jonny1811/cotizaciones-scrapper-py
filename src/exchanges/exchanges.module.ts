@@ -11,24 +11,21 @@ import { ExchangesRepository } from './exchanges.repository';
     MongooseModule.forFeature([
       {
         name: EXCHANGES_MODEL_NAME,
-        schema: ExchangesSchema
-      }
-    ])
+        schema: ExchangesSchema,
+      },
+    ]),
   ],
   controllers: [ExchangesController],
-  providers: [
-    ExchangesService,
-    ExchangesRepository
-  ],
+  providers: [ExchangesService, ExchangesRepository],
   exports: [
     MongooseModule.forFeature([
       {
         name: EXCHANGES_MODEL_NAME,
-        schema: ExchangesSchema
-      }
+        schema: ExchangesSchema,
+      },
     ]),
     ExchangesService,
-    ExchangesRepository
-  ]
+    ExchangesRepository,
+  ],
 })
 export class ExchangesModule {}
