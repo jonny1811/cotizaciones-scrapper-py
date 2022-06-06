@@ -43,7 +43,7 @@ export class BancoContinentalService implements Service {
         return placeInfo;
     }
 
-    async getExchangeData() {
+    async getExchangeData(): Promise<CreateExchangesDTO> {
         const URL = `https://www.bancontinental.com.py/`;
         const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
@@ -55,20 +55,20 @@ export class BancoContinentalService implements Service {
         const details = await page.evaluate(() => {
             const parseBancoContinental = [
                 {
-                    moneda: 'Dolar',
+                    moneda: 'USD',
+                    clase: '#slide-ngb-slide-1 > div > div',
+                },
+                {
+                    moneda: 'ARS',
                     clase: '#slide-ngb-slide-6 > div > div',
                 },
                 {
-                    moneda: 'Peso Argentino',
-                    clase: '#slide-ngb-slide-14 > div > div',
+                    moneda: 'BRL',
+                    clase: '#slide-ngb-slide-7 > div > div',
                 },
                 {
-                    moneda: 'Real',
-                    clase: '#slide-ngb-slide-20 > div > div',
-                },
-                {
-                    moneda: 'Euro',
-                    clase: '#slide-ngb-slide-8 > div > div',
+                    moneda: 'EUR',
+                    clase: '#slide-ngb-slide-3 > div > div',
                 },
             ];
             let details: Partial<Details>[] = [];
@@ -102,7 +102,7 @@ export class BancoContinentalService implements Service {
         const detailsData: CreateExchangesDTO = {
             date: DateUtils.splitDate(),
             place: place[0]._id,
-            branch: '',
+            branch: null,
             fullDate: new Date().toISOString(),
             details: details,
         };

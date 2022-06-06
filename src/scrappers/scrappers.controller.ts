@@ -23,11 +23,14 @@ export class ScrapperController {
 
     @Get('banco-familiar')
     async scrapperBankFamiliar() {
+		// const placeInfo = await this.bancoFamiliarService.getExchangePlace()
+		// await this.placeService.savePlace(placeInfo)
         const bankFamiliar = await this.bancoFamiliarService.getExchangeData()
         await this.exchangesService.saveExchange(bankFamiliar)
         return {
-            entityBank: 'Banco Familiar',
-            status: 200
+            status: 200,
+            entityBank: 'Correctly Data Saved at Banco Familiar',
+			data: bankFamiliar
         }
     }
 
@@ -46,11 +49,14 @@ export class ScrapperController {
 
     @Get('banco-continental')
     async scrapperBancoContinental() {
-        const bankContinental = await this.bancoContinentalService.getExchangeData()
+        // const placeInfo = await this.bancoContinentalService.getExchangePlace();
+		// await this.placeService.savePlace(placeInfo);
+		const bankContinental = await this.bancoContinentalService.getExchangeData()
         await this.exchangesService.saveExchange(bankContinental)
         return {
-            entityBank: 'Banco Continental',
-            status: 200
+            status: 200,
+            entityBank: 'Correctly Data Saved at Banco Continental',
+			data: bankContinental
         }
     }
 
